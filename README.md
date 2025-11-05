@@ -23,6 +23,8 @@ serious section begins now...
 A demonstration CLI tool showcasing [PEP 810 (Explicit Lazy Imports)](https://peps.python.org/pep-0810/) for 
 conference talks and educational purposes.
 
+### [Talk Notes](CONFERENCE.md) 
+
 ## What is PEP 810?
 
 PEP 810 introduces explicit lazy imports to Python, allowing modules to be imported only when first accessed 
