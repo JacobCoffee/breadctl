@@ -13,19 +13,19 @@ app = App(
 
 
 @app.command
-def bake():
+def bake() -> None:
     """🥖 Bake fresh loaves with heavy stdlib imports."""
     bake_mod.run()
 
 
 @app.command
-def deliver():
+def deliver() -> None:
     """🚚 Deliver bread to customers using httpx."""
     deliver_mod.run()
 
 
 @app.command
-def inventory():
+def inventory() -> None:
     """📦 Show current inventory using sqlite3."""
     inventory_mod.run()
 

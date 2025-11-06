@@ -59,7 +59,11 @@ target-version = "py314" # it's a lie but uv doesn't like 315 yet :)
 
 [tool.ruff.lint]
 select = ["ALL"]
-ignore = ["D203", "D212", "COM812"]
+ignore = [
+    "D203", "D212", "COM812", "E501", "S108",
+    # issues with lazy imports AST & ruff :)
+    "PLC0415", "F821"
+    ]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["S101", "S607",]

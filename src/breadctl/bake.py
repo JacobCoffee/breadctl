@@ -20,4 +20,3 @@ def run() -> None:
     for loaf, temp in itertools.zip_longest(loaves, temps):
         data["loaves"].append(loaf)
         data["temps"].append(temp)
-

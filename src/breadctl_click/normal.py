@@ -6,27 +6,28 @@ from breadctl import bake, deliver, inventory
 
 
 @click.group()
-def breadctl():
-    """🍞 breadctl - Manage bread operations.
+def breadctl() -> None:
+    """
+    🍞 breadctl - Manage bread operations.
 
     This is the NORMAL version that imports all modules at startup.
     """
 
 
 @breadctl.command(name="bake")
-def bake_cmd():
+def bake_cmd() -> None:
     """🥖 Bake fresh loaves with heavy stdlib imports."""
     bake.run()
 
 
 @breadctl.command(name="deliver")
-def deliver_cmd():
+def deliver_cmd() -> None:
     """🚚 Deliver bread to customers using httpx."""
     deliver.run()
 
 
 @breadctl.command(name="inventory")
-def inventory_cmd():
+def inventory_cmd() -> None:
     """📦 Show current inventory using sqlite3."""
     inventory.run()
 

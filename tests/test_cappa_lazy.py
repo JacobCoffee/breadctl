@@ -1,7 +1,6 @@
 """Tests for cappa lazy imports CLI."""
 
 import cappa
-import pytest
 
 from breadctl_cappa.lazy import BreadctlLazy
 

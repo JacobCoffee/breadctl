@@ -4,8 +4,9 @@ import rich_click as click
 
 
 @click.group()
-def breadctl_lazy():
-    """🍞 breadctl-lazy - Manage bread operations.
+def breadctl_lazy() -> None:
+    """
+    🍞 breadctl-lazy - Manage bread operations.
 
     This is the LAZY version using deferred imports.
     Modules are only loaded when their commands are invoked.
@@ -13,7 +14,7 @@ def breadctl_lazy():
 
 
 @breadctl_lazy.command(name="bake")
-def bake_cmd():
+def bake_cmd() -> None:
     """🥖 Bake fresh loaves with heavy stdlib imports."""
     from breadctl import bake
 
@@ -21,7 +22,7 @@ def bake_cmd():
 
 
 @breadctl_lazy.command(name="deliver")
-def deliver_cmd():
+def deliver_cmd() -> None:
     """🚚 Deliver bread to customers using httpx."""
     from breadctl import deliver
 
@@ -29,7 +30,7 @@ def deliver_cmd():
 
 
 @breadctl_lazy.command(name="inventory")
-def inventory_cmd():
+def inventory_cmd() -> None:
     """📦 Show current inventory using sqlite3."""
     from breadctl import inventory
 

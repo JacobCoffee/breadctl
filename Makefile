@@ -55,11 +55,10 @@ upgrade: ## Upgrade dependencies
 	uv lock --upgrade
 
 lint: ## Run ruff linter
-	uv run ruff src/ tests/ --fix --unsafe-fixes
+	uv run ruff check --fix --unsafe-fixes src/ tests/
 
 fmt: ## Format code with ruff
 	uv run ruff format src/ tests/
-	uv run ruff check --fix src/ tests/
 
 ty: ## Run type checking with ty
 	uv run ty check src/
@@ -67,7 +66,7 @@ ty: ## Run type checking with ty
 test: ## Run pytest tests
 	uv run pytest
 
-ci:  lint fmt ty test  ## Run all CI checks
+ci:  ty lint fmt test  ## Run all CI checks
 
 bench-clean: ## Clear all benchmark results and charts
 	@echo "🧹 Cleaning benchmark results..."

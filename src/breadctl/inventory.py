@@ -24,5 +24,4 @@ def run() -> None:
     cursor.execute("SELECT item, quantity FROM inventory")
     {row[0]: row[1] for row in cursor.fetchall()}
 
-
     conn.close()
