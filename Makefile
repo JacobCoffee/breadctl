@@ -25,8 +25,8 @@ init-submodule: ## Initialize CPython submodule
 
 build-python: init-submodule ## Build custom CPython 3.15 with PEP 810 support
 	@echo "🐍 Building CPython 3.15 with PEP 810 support..."
-	@echo "ℹ️  Required dependencies: gettext, openssl@3, xz"
-	@echo "   macOS: brew install gettext openssl@3 xz"
+	@echo "ℹ️  Required dependencies: gettext, openssl@3, xz, zstd"
+	@echo "   macOS: brew install gettext openssl@3 xz zstd"
 	@echo ""
 	cd cpython-lazy && \
 		if [ "$$(uname -s)" = "Darwin" ] && [ "$$(uname -m)" = "arm64" ]; then \
@@ -35,11 +35,13 @@ build-python: init-submodule ## Build custom CPython 3.15 with PEP 810 support
 			export CPPFLAGS="-I/opt/homebrew/opt/gettext/include -I/opt/homebrew/opt/openssl@3/include"; \
 			export PKG_CONFIG_PATH="/opt/homebrew/opt/gettext/lib/pkgconfig:/opt/homebrew/opt/openssl@3/lib/pkgconfig"; \
 		fi && \
-		./configure --with-pydebug --prefix=$(shell pwd) && \
+		./configure --with-pydebug --enable-optimizations --with-lto --prefix=$(shell pwd) && \
 		make -j$(shell nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4) && \
 		make install
 	@echo "✅ Python built successfully!"
 	@echo "   Location: ./bin/python3.15"
+	@echo ""
+	@echo "⚠️Note⚠️: This includes LTO & Optimizations :)"
 	@echo ""
 	@echo "Updating .python-version..."
 	@echo "./bin/python3.15" > .python-version
