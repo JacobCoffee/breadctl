@@ -488,7 +488,148 @@ def main() -> None:
         print(f"\n⚠️  {full_matrix_file} not found. Skipping framework comparison charts.")
         print("   Run 'make bench-full' to generate framework comparison data.")
 
+    # Part 3: Parse and visualize import time data
+    verbose_file = Path("benchmarks/benchmark-verbose.md")
+    if verbose_file.exists():
+        print("\n📊 Part 3: Parsing import time data...")
+        verbose_content = verbose_file.read_text()
+        import_times = parse_import_times(verbose_content)
+
+        if import_times:
+            print(f"   Found {len(import_times)} import time measurements")
+            print("\n🎨 Generating import time comparison chart...")
+            create_import_time_comparison_chart(import_times, output_dir / "import-time-comparison.png")
+
+            print("\n✅ Import time chart generated:")
+            print("  - import-time-comparison.png  (all frameworks: normal vs lazy)")
+        else:
+            print("   ⚠️  No import time data found")
+
     print(f"\n🎉 All available charts saved to {output_dir}/")
+
+
+def parse_import_times(content: str) -> dict[str, float]:
+    """
+    Parse import times from benchmark-verbose.md.
+
+    Extracts the final cumulative import time for each variant.
+    Format: "import time: XXX | YYY | module_name"
+    We want the last line's cumulative time (YYY) for each section.
+
+    Returns:
+        Dictionary mapping variant name to import time in milliseconds
+    """
+    import_times = {}
+
+    variants = [
+        ("## Cappa (normal)", "cappa_normal"),
+        ("## Cappa (lazy)", "cappa_lazy"),
+        ("## Click (normal)", "click_normal"),
+        ("## Click (lazy)", "click_lazy"),
+        ("## Cyclopts (normal)", "cyclopts_normal"),
+        ("## Cyclopts (lazy)", "cyclopts_lazy"),
+    ]
+
+    for section_marker, variant_key in variants:
+        section_start = content.find(section_marker)
+        if section_start == -1:
+            continue
+
+        # Find the code block for this section
+        code_start = content.find("```", section_start)
+        code_end = content.find("```", code_start + 3)
+
+        if code_start == -1 or code_end == -1:
+            continue
+
+        section_content = content[code_start:code_end]
+
+        # Find all "import time:" lines
+        import_lines = [line for line in section_content.split("\n") if line.strip().startswith("import time:")]
+
+        if import_lines:
+            # Last line has the total cumulative time
+            last_line = import_lines[-1]
+            # Format: "import time:      XXX |      YYY | module_name"
+            parts = last_line.split("|")
+            if len(parts) >= 2:
+                try:
+                    # Second column is cumulative time in microseconds
+                    cumulative_us = int(parts[1].strip())
+                    # Convert to milliseconds
+                    import_times[variant_key] = cumulative_us / 1000.0
+                except (ValueError, IndexError):
+                    continue
+
+    return import_times
+
+
+def create_import_time_comparison_chart(import_times: dict[str, float], output_path: Path) -> None:
+    """Create chart comparing import times across all frameworks."""
+    frameworks = ["cappa", "click", "cyclopts"]
+    framework_labels = ["Cappa", "Click", "Cyclopts"]
+
+    normal_times = []
+    lazy_times = []
+    improvements = []
+
+    for fw in frameworks:
+        normal_key = f"{fw}_normal"
+        lazy_key = f"{fw}_lazy"
+
+        if normal_key in import_times and lazy_key in import_times:
+            normal_time = import_times[normal_key]
+            lazy_time = import_times[lazy_key]
+
+            normal_times.append(normal_time)
+            lazy_times.append(lazy_time)
+
+            # Calculate improvement percentage
+            improvement = ((normal_time - lazy_time) / normal_time) * 100
+            improvements.append(improvement)
+        else:
+            normal_times.append(0)
+            lazy_times.append(0)
+            improvements.append(0)
+
+    x = np.arange(len(frameworks))
+    width = 0.35
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+    bars1 = ax.bar(x - width/2, normal_times, width, label="Normal (eager imports)",
+                   color="#ef4444", alpha=0.8)
+    bars2 = ax.bar(x + width/2, lazy_times, width, label="Lazy imports",
+                   color="#22c55e", alpha=0.8)
+
+    ax.set_xlabel("CLI Framework", fontsize=12, fontweight="bold")
+    ax.set_ylabel("Total Import Time (ms)", fontsize=12, fontweight="bold")
+    ax.set_title("Import Time Comparison: Normal vs Lazy Loading", fontsize=14, fontweight="bold")
+    ax.set_xticks(x)
+    ax.set_xticklabels(framework_labels)
+    ax.legend(fontsize=11)
+    ax.grid(axis="y", alpha=0.3)
+
+    # Add value labels on bars
+    for bars in [bars1, bars2]:
+        for bar in bars:
+            height = bar.get_height()
+            if height > 0:
+                ax.text(bar.get_x() + bar.get_width()/2., height,
+                       f"{height:.1f}ms",
+                       ha="center", va="bottom", fontsize=9)
+
+    # Add improvement percentages above each pair
+    for i, improvement in enumerate(improvements):
+        if improvement > 0:
+            max_height = max(normal_times[i], lazy_times[i])
+            ax.text(i, max_height * 1.1,
+                   f"↓ {improvement:.1f}%",
+                   ha="center", va="bottom", fontsize=10,
+                   fontweight="bold", color="#059669")
+
+    plt.tight_layout()
+    plt.savefig(output_path, dpi=300, bbox_inches="tight")
+    print(f"✓ Saved import time comparison chart to {output_path}")
 
 
 if __name__ == "__main__":

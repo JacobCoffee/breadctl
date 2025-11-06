@@ -171,22 +171,50 @@ bench-full: ## Run comprehensive benchmark across all variants and commands
 	@echo ""
 	@echo "✅ Results saved to benchmarks/benchmark-full-matrix.md"
 
-bench-verbose: ## Detailed benchmark with import time tracing
+bench-verbose: ## Detailed benchmark with import time tracing for all frameworks
+	@echo "# Import Time Analysis - All Frameworks" > benchmarks/benchmark-verbose.md
 	@echo "" >> benchmarks/benchmark-verbose.md
-	@echo "## Import time analysis (normal)" >> benchmarks/benchmark-verbose.md
+	@echo "Generated: $$(date)" >> benchmarks/benchmark-verbose.md
 	@echo "" >> benchmarks/benchmark-verbose.md
-	@echo '```' >> benchmarks/benchmark-verbose.md
-	@{ uv run python -X importtime -c "import breadctl.normal" 2>&1; } >> benchmarks/benchmark-verbose.md
-	@echo '```' >> benchmarks/benchmark-verbose.md
-	@echo "" >> benchmarks/benchmark-verbose.md
-	@echo "## Import time analysis (lazy)" >> benchmarks/benchmark-verbose.md
+	@echo "## Cappa (normal)" >> benchmarks/benchmark-verbose.md
 	@echo "" >> benchmarks/benchmark-verbose.md
 	@echo '```' >> benchmarks/benchmark-verbose.md
-	@{ uv run python -X importtime -c "import breadctl.lazy" 2>&1; } >> benchmarks/benchmark-verbose.md
+	@{ uv run python -X importtime -c "import breadctl_cappa.normal" 2>&1; } >> benchmarks/benchmark-verbose.md
+	@echo '```' >> benchmarks/benchmark-verbose.md
+	@echo "" >> benchmarks/benchmark-verbose.md
+	@echo "## Cappa (lazy)" >> benchmarks/benchmark-verbose.md
+	@echo "" >> benchmarks/benchmark-verbose.md
+	@echo '```' >> benchmarks/benchmark-verbose.md
+	@{ uv run python -X importtime -c "import breadctl_cappa.lazy" 2>&1; } >> benchmarks/benchmark-verbose.md
+	@echo '```' >> benchmarks/benchmark-verbose.md
+	@echo "" >> benchmarks/benchmark-verbose.md
+	@echo "## Click (normal)" >> benchmarks/benchmark-verbose.md
+	@echo "" >> benchmarks/benchmark-verbose.md
+	@echo '```' >> benchmarks/benchmark-verbose.md
+	@{ uv run python -X importtime -c "import breadctl_click.normal" 2>&1; } >> benchmarks/benchmark-verbose.md
+	@echo '```' >> benchmarks/benchmark-verbose.md
+	@echo "" >> benchmarks/benchmark-verbose.md
+	@echo "## Click (lazy)" >> benchmarks/benchmark-verbose.md
+	@echo "" >> benchmarks/benchmark-verbose.md
+	@echo '```' >> benchmarks/benchmark-verbose.md
+	@{ uv run python -X importtime -c "import breadctl_click.lazy" 2>&1; } >> benchmarks/benchmark-verbose.md
+	@echo '```' >> benchmarks/benchmark-verbose.md
+	@echo "" >> benchmarks/benchmark-verbose.md
+	@echo "## Cyclopts (normal)" >> benchmarks/benchmark-verbose.md
+	@echo "" >> benchmarks/benchmark-verbose.md
+	@echo '```' >> benchmarks/benchmark-verbose.md
+	@{ uv run python -X importtime -c "import breadctl_cyclopts.normal" 2>&1; } >> benchmarks/benchmark-verbose.md
+	@echo '```' >> benchmarks/benchmark-verbose.md
+	@echo "" >> benchmarks/benchmark-verbose.md
+	@echo "## Cyclopts (lazy)" >> benchmarks/benchmark-verbose.md
+	@echo "" >> benchmarks/benchmark-verbose.md
+	@echo '```' >> benchmarks/benchmark-verbose.md
+	@{ uv run python -X importtime -c "import breadctl_cyclopts.lazy" 2>&1; } >> benchmarks/benchmark-verbose.md
 	@echo '```' >> benchmarks/benchmark-verbose.md
 	@echo ""
-	@echo "Detailed import traces appended to benchmarks/benchmark-verbose.md"
+	@echo "✅ Detailed import traces for all 6 variants saved to benchmarks/benchmark-verbose.md"
 
+# TODO: do something better...
 bench-format: ## Internal: Format markdown tables in benchmark results
 	@# Remove empty table rows (rows with only pipes and spaces/dashes)
 	@for file in benchmarks/benchmark-*.md; do \
