@@ -1,33 +1,33 @@
 # breadctl Benchmark Results
 
-Generated: Wed Nov  5 12:40:38 CST 2025
+Generated: Thu Nov  6 10:59:36 CST 2025
 
 ## CLI Framework Comparison (--help command)
 
-| Command                                |    Mean [ms] | Min [ms] | Max [ms] |    Relative |
-|:---------------------------------------|-------------:|---------:|---------:|------------:|
-| `uv run breadctl --help`               |  245.8 ± 7.0 |    239.5 |    262.7 | 1.61 ± 0.06 |
-| `uv run breadctl-lazy --help`          | 202.5 ± 10.5 |    192.4 |    220.7 | 1.32 ± 0.08 |
-| `uv run breadctl-click --help`         |  200.8 ± 7.3 |    190.4 |    210.7 | 1.31 ± 0.06 |
-| `uv run breadctl-click-lazy --help`    |  152.8 ± 4.1 |    147.5 |    158.7 |        1.00 |
-| `uv run breadctl-cyclopts --help`      |  236.9 ± 2.1 |    234.9 |    240.9 | 1.55 ± 0.04 |
-| `uv run breadctl-cyclopts-lazy --help` |  182.7 ± 1.3 |    180.5 |    184.6 | 1.20 ± 0.03 |
+| Command | Mean [ms] | Min [ms] | Max [ms] | Relative |
+|:---|---:|---:|---:|---:|
+| `uv run breadctl --help` | 233.7 ± 14.9 | 216.6 | 262.8 | 1.79 ± 0.12 |
+| `uv run breadctl-lazy --help` | 184.1 ± 8.7 | 177.0 | 207.7 | 1.41 ± 0.07 |
+| `uv run breadctl-click --help` | 170.0 ± 1.2 | 168.3 | 171.7 | 1.31 ± 0.02 |
+| `uv run breadctl-click-lazy --help` | 130.2 ± 2.1 | 128.7 | 135.6 | 1.00 |
+| `uv run breadctl-cyclopts --help` | 211.8 ± 7.7 | 205.9 | 227.2 | 1.63 ± 0.06 |
+| `uv run breadctl-cyclopts-lazy --help` | 159.0 ± 2.0 | 156.7 | 161.9 | 1.22 ± 0.02 |
 ## Full matrix with all subcommands
 
-| Command                          |   Mean [ms] | Min [ms] | Max [ms] |    Relative |
-|:---------------------------------|------------:|---------:|---------:|------------:|
-| `uv run breadctl --help`         | 245.1 ± 1.7 |    243.1 |    247.5 | 1.29 ± 0.02 |
-| `uv run breadctl-lazy --help`    | 190.7 ± 2.4 |    187.6 |    195.5 |        1.00 |
-| `uv run breadctl bake`           | 560.0 ± 5.8 |    550.0 |    570.3 | 2.94 ± 0.05 |
-| `uv run breadctl-lazy bake`      | 512.2 ± 7.1 |    500.0 |    523.2 | 2.69 ± 0.05 |
-| `uv run breadctl deliver`        | 454.9 ± 7.4 |    442.9 |    464.2 | 2.39 ± 0.05 |
-| `uv run breadctl-lazy deliver`   | 452.5 ± 7.2 |    438.3 |    460.0 | 2.37 ± 0.05 |
-| `uv run breadctl inventory`      | 558.6 ± 9.0 |    541.6 |    573.1 | 2.93 ± 0.06 |
-| `uv run breadctl-lazy inventory` | 512.8 ± 5.8 |    504.0 |    521.1 | 2.69 ± 0.05 |
+| Command | Mean [ms] | Min [ms] | Max [ms] | Relative |
+|:---|---:|---:|---:|---:|
+| `uv run breadctl --help` | 215.2 ± 4.1 | 211.1 | 224.0 | 1.31 ± 0.03 |
+| `uv run breadctl-lazy --help` | 164.7 ± 2.0 | 163.1 | 168.8 | 1.00 |
+| `uv run breadctl bake` | 537.3 ± 7.4 | 528.7 | 552.0 | 3.26 ± 0.06 |
+| `uv run breadctl-lazy bake` | 538.5 ± 6.9 | 525.5 | 546.1 | 3.27 ± 0.06 |
+| `uv run breadctl deliver` | 433.7 ± 9.0 | 415.7 | 445.8 | 2.63 ± 0.06 |
+| `uv run breadctl-lazy deliver` | 432.3 ± 8.0 | 421.7 | 441.3 | 2.63 ± 0.06 |
+| `uv run breadctl inventory` | 537.7 ± 14.2 | 518.5 | 561.6 | 3.27 ± 0.09 |
+| `uv run breadctl-lazy inventory` | 537.2 ± 5.1 | 529.7 | 543.4 | 3.26 ± 0.05 |
 
 ## Using `python -c 'import breadctl.{normal,lazy}'`
 
-| Command                                           |   Mean [ms] | Min [ms] | Max [ms] |    Relative |
-|:--------------------------------------------------|------------:|---------:|---------:|------------:|
-| `uv run python -c 'import breadctl_cappa.normal'` | 229.0 ± 4.6 |    222.5 |    236.1 | 1.36 ± 0.03 |
-| `uv run python -c 'import breadctl_cappa.lazy'`   | 168.2 ± 1.7 |    166.0 |    171.3 |        1.00 |
+| Command | Mean [ms] | Min [ms] | Max [ms] | Relative |
+|:---|---:|---:|---:|---:|
+| `uv run python -c 'import breadctl_cappa.normal'` | 197.8 ± 3.2 | 195.3 | 205.4 | 1.34 ± 0.02 |
+| `uv run python -c 'import breadctl_cappa.lazy'` | 147.3 ± 1.2 | 146.3 | 149.5 | 1.00 |
