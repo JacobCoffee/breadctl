@@ -10,13 +10,12 @@ def breadctl_lazy():
     This is the LAZY version using deferred imports.
     Modules are only loaded when their commands are invoked.
     """
-    pass
 
 
 @breadctl_lazy.command(name="bake")
 def bake_cmd():
     """🥖 Bake fresh loaves with heavy stdlib imports."""
-    from breadctl_click import bake
+    from breadctl import bake
 
     bake.run()
 
@@ -24,7 +23,7 @@ def bake_cmd():
 @breadctl_lazy.command(name="deliver")
 def deliver_cmd():
     """🚚 Deliver bread to customers using httpx."""
-    from breadctl_click import deliver
+    from breadctl import deliver
 
     deliver.run()
 
@@ -32,7 +31,7 @@ def deliver_cmd():
 @breadctl_lazy.command(name="inventory")
 def inventory_cmd():
     """📦 Show current inventory using sqlite3."""
-    from breadctl_click import inventory
+    from breadctl import inventory
 
     inventory.run()
 

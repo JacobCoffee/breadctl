@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 import cappa
 
-from breadctl_cappa import bake, deliver, inventory
+from breadctl import bake, deliver, inventory
 
 
 @cappa.command(name="bake", invoke=bake.run)

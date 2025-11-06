@@ -5,9 +5,9 @@ from dataclasses import dataclass
 import cappa
 
 # PEP 810 lazy imports - modules only loaded when used
-lazy import breadctl_cappa.bake as bake
-lazy import breadctl_cappa.deliver as deliver
-lazy import breadctl_cappa.inventory as inventory
+lazy import breadctl.bake as bake
+lazy import breadctl.deliver as deliver
+lazy import breadctl.inventory as inventory
 
 
 @cappa.command(name="bake", invoke=lambda: bake.run())

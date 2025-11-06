@@ -2,9 +2,9 @@
 
 from cyclopts import App
 
-from breadctl_cyclopts import bake as bake_mod
-from breadctl_cyclopts import deliver as deliver_mod
-from breadctl_cyclopts import inventory as inventory_mod
+from breadctl import bake as bake_mod
+from breadctl import deliver as deliver_mod
+from breadctl import inventory as inventory_mod
 
 app = App(
     name="breadctl",

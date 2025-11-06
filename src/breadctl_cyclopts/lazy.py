@@ -11,7 +11,7 @@ app = App(
 @app.command
 def bake():
     """🥖 Bake fresh loaves with heavy stdlib imports."""
-    from breadctl_cyclopts import bake as bake_mod
+    from breadctl import bake as bake_mod
 
     bake_mod.run()
 
@@ -19,7 +19,7 @@ def bake():
 @app.command
 def deliver():
     """🚚 Deliver bread to customers using httpx."""
-    from breadctl_cyclopts import deliver as deliver_mod
+    from breadctl import deliver as deliver_mod
 
     deliver_mod.run()
 
@@ -27,7 +27,7 @@ def deliver():
 @app.command
 def inventory():
     """📦 Show current inventory using sqlite3."""
-    from breadctl_cyclopts import inventory as inventory_mod
+    from breadctl import inventory as inventory_mod
 
     inventory_mod.run()
 

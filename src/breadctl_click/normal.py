@@ -2,7 +2,7 @@
 
 import rich_click as click
 
-from breadctl_click import bake, deliver, inventory
+from breadctl import bake, deliver, inventory
 
 
 @click.group()
@@ -11,7 +11,6 @@ def breadctl():
 
     This is the NORMAL version that imports all modules at startup.
     """
-    pass
 
 
 @breadctl.command(name="bake")
