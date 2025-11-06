@@ -9,9 +9,7 @@ def run() -> None:
     """Simulate delivery using httpx."""
     time.sleep(0.2)
 
-    response = httpx.Response(
+    httpx.Response(
         status_code=200,
         text="Delivered OK",
     )
-    print(f"🚚 Delivery status: {response.text}")
-    print(f"   HTTP Status: {response.status_code}")

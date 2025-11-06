@@ -20,7 +20,7 @@
 ```bash
 # Terminal 1
 time uv run breadctl --help
-# Takes ~150ms, loads all modules
+# Takes ~232ms, loads all modules including httpx, sqlite3, etc.
 ```
 
 problem: shit is slow
@@ -36,10 +36,11 @@ very nice, but how does it work?
 ```bash
 # Terminal 2
 time uv run breadctl-lazy --help
-# Takes ~40ms, only loads click/rich
+# Takes ~179.7ms, only loads cappa/rich (29% faster!)
+# TODO: click was faster, i think? need to benchmark against
 ```
 
-no more problem. okay, is still slow but like.. not as bad right?
+no more problem. okay, is still a little slow but like.. **29% faster**.. not as bad right?
 
 **4. Deep Dive (5 min)**
 ```bash
@@ -57,11 +58,45 @@ make bench
 cat benchmark-results.md
 ```
 
+Show charts from `benchmarks/`:
+- `combined.png` - Full matrix with all commands
+- `comparison.png` - Side-by-side comparison
+- `import-comparison.png` - Pure import overhead
+- `speedup.png` - Relative speedup visualization
+
+![Combined Results](benchmarks/combined.png)
+
 **6. Explain When to Use (5 min)**
 - CLI tools with many subcommands (litestar 😉)
 - Large test suites
 - Services with optional features
 - Applications with plugin systems (litestar 😉)
+
+**BONUS: Show Different CLI Frameworks (2-3 min)**
+```bash
+# All three frameworks work!
+uv run breadctl-click --help          # Click + rich-click
+uv run breadctl-cyclopts --help       # Cyclopts
+uv run breadctl --help                # Cappa (default)
+
+# Compare performance
+make bench  # Shows all 6 variants
+```
+
+Key point: Lazy loading patterns vary by framework:
+- **Cappa**: PEP 810 `lazy import` (cleanest, requires custom Python)
+- **Click**: Inline imports in command functions (fastest lazy: 147.6ms)
+- **Cyclopts**: Same as Click, inline imports
+
+**Framework --help Performance:**
+- Click-lazy: **147.6ms** (fastest overall)
+- Cyclopts-lazy: 183.2ms (1.24× slower)
+- Cappa-lazy: 189.1ms (1.28× slower)
+- Click-normal: 190.4ms (1.29× slower)
+- Cyclopts-normal: 237.7ms (1.61× slower)
+- Cappa-normal: 242.9ms (1.65× slower)
+
+![Framework Comparison](benchmarks/framework-all-commands.png)
 
 **7. Caveats (2 min)**
 - Import-time side effects are deferred
@@ -76,16 +111,36 @@ ask me something i don't know how to answer
 
 ### Why Lazy Imports Matter
 
-todo: update
+Real benchmark results from `breadctl`:
 
-- **CLI Tools**: `--help` shouldn't load heavyweight dependencies
+- **CLI Tools**: `--help` is **29% faster** (232ms → 179.7ms) - lightweight commands shouldn't load heavyweight dependencies
+- **Module Imports**: **30% faster** module loading (236.6ms → 182.2ms)
+- **Selective Loading**: Commands like `inventory` see **~10% improvement** (576.2ms → 520.2ms) by deferring unused modules
 - **Test Suites**: Faster test discovery and collection
 - **Microservices**: Reduced cold-start time in serverless
 - **Developer Experience**: Clearer than manual `if TYPE_CHECKING:` blocks
 
-### PEP 810 Design Principles
+![Performance Comparison](benchmarks/comparison.png)
 
-todo: update 
+![Speedup Metrics](benchmarks/speedup.png)
+
+### CLI Framework Performance Notes
+
+This demo includes **three CLI frameworks** to show lazy loading works universally:
+
+**Full Command Performance (bake, deliver, inventory):**
+
+![Framework Speedup](benchmarks/framework-speedup.png)
+
+| Command | Click-lazy | Cyclopts-lazy | Cappa-lazy | Winner |
+|---------|-----------|---------------|------------|--------|
+| **bake** | 392.3ms | 425.7ms | 506.5ms | Click (1.35× faster) |
+| **deliver** | 407.8ms | 423.7ms | 452.3ms | Click (1.11× faster) |
+| **inventory** | 395.2ms | 420.4ms | 496.5ms | Click (1.26× faster) |
+
+**Key Insight:** Click with inline imports consistently fastest across all commands. Lazy loading effectiveness varies by framework overhead.
+
+### PEP 810 Design Principles 
 
 1. **Explicit**: Uses `lazy` keyword, no surprises
 2. **Local**: Only affects the specific import statement

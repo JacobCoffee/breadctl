@@ -1,0 +1,4 @@
+[submodule "cpython-lazy"]
+	path = cpython-lazy
+	url = https://github.com/LazyImportsCabal/cpython.git
+	branch = lazy

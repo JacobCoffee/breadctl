@@ -1,0 +1,19 @@
+# Benchmark temporary files (keep final results)
+benchmarks/benchmark-help.md
+benchmarks/benchmark-subcommands.md
+benchmarks/benchmark-imports.md
+benchmarks/benchmark-bake.md
+benchmarks/benchmark-deliver.md
+benchmarks/benchmark-inventory.md
+
+# CPython build artifacts
+bin/
+cpython-lazy/build/
+cpython-lazy/*.o
+cpython-lazy/Programs/_freeze_module
+cpython-lazy/Programs/_testembed
+cpython-lazy/python
+cpython-lazy/python.exe
+lib/
+share/
+include/

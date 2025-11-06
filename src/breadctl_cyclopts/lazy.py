@@ -1,0 +1,41 @@
+"""Lazy imports CLI entry point - uses inline imports for deferred loading."""
+
+from cyclopts import App
+
+app = App(
+    name="breadctl-lazy",
+    help="🍞 breadctl-lazy - Manage bread operations.\n\nThis is the LAZY version using lazy loading.\nModules are only loaded when their commands are invoked.",
+)
+
+
+@app.command
+def bake():
+    """🥖 Bake fresh loaves with heavy stdlib imports."""
+    from breadctl_cyclopts import bake as bake_mod
+
+    bake_mod.run()
+
+
+@app.command
+def deliver():
+    """🚚 Deliver bread to customers using httpx."""
+    from breadctl_cyclopts import deliver as deliver_mod
+
+    deliver_mod.run()
+
+
+@app.command
+def inventory():
+    """📦 Show current inventory using sqlite3."""
+    from breadctl_cyclopts import inventory as inventory_mod
+
+    inventory_mod.run()
+
+
+def cli() -> None:
+    """Entry point for the lazy CLI."""
+    app()
+
+
+if __name__ == "__main__":
+    cli()
